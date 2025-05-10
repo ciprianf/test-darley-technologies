@@ -172,7 +172,6 @@ public:
 };
 
 // Read JSON data from a file
-// TODO: change name to camel-case.
 std::string ReadTickerData(const std::string& filename) {
     std::ifstream file(filename);
     if (!file.is_open()) {
@@ -193,8 +192,7 @@ std::string ReadTickerData(const std::string& filename) {
 
 // Print instrument statistics. For simplicity we only print
 // a couple of properties.
-// TODO: make it const reference. Fix indexing unordered_map.
-void PrintInstrumentStats(std::vector<Instrument>& instruments) {
+void PrintInstrumentStats(const std::vector<Instrument>& instruments) {
     if (instruments.empty()) {
         std::cerr << "No instruments to display." << std::endl;
         return;
@@ -210,12 +208,12 @@ void PrintInstrumentStats(std::vector<Instrument>& instruments) {
     std::cout << std::string(60, '-') << std::endl;
 
     // Print each instrument
-    for (auto& instrument : instruments) {
+    for (const auto& instrument : instruments) {
         std::cout << std::left
-                  << std::setw(20) << (instrument.m.find("symbol") != instrument.m.end() ? instrument.m["symbol"] : Value("N/A"))
-                  << std::setw(12) << (instrument.m.find("lastPrice") != instrument.m.end() ? instrument.m["lastPrice"] : Value("N/A"))
-                  << std::setw(15) << (instrument.m.find("priceChangePercent") != instrument.m.end() ? instrument.m["priceChangePercent"] : Value("N/A"))
-                  << std::setw(10) << (instrument.m.find("volume") != instrument.m.end() ? instrument.m["volume"] : Value("N/A"))
+                  << std::setw(20) << (instrument.m.find("symbol") != instrument.m.end() ? instrument.m.find("symbol")->second : Value("N/A"))
+                  << std::setw(12) << (instrument.m.find("lastPrice") != instrument.m.end() ? instrument.m.find("lastPrice")->second : Value("N/A"))
+                  << std::setw(15) << (instrument.m.find("priceChangePercent") != instrument.m.end() ? instrument.m.find("priceChangePercent")->second : Value("N/A"))
+                  << std::setw(10) << (instrument.m.find("volume") != instrument.m.end() ? instrument.m.find("volume")->second : Value("N/A"))
                   << std::endl;
     }
 }
